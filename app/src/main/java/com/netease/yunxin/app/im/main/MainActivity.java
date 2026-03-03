@@ -391,7 +391,7 @@ public class MainActivity extends BaseLocalActivity {
     }
 
       // OpenClaw 智能体集成逻辑
-      checkAndCreateOpenClawSession();
+      OpenClawUtils.checkAndCreateOpenClawSession(this,cloudConversation);
   }
 
   @Override
@@ -418,30 +418,7 @@ public class MainActivity extends BaseLocalActivity {
     }
   }
   
-  /**
-   * 检查并创建 OpenClaw 智能体会话
-   * 仅在用户配置了 OpenClaw 账号时执行
-   */
-  private void checkAndCreateOpenClawSession() {
-    try {
-      // 获取用户配置的 OpenClaw 账号
-      String openClawAccount = ConfigDataUtils.getOpenClawAccount(this);
-      
-      // 如果没有配置 OpenClaw 账号，跳过
-      if (TextUtils.isEmpty(openClawAccount)) {
-        ALog.i(Constant.PROJECT_TAG, "checkAndCreateOpenClawSession", "No OpenClaw account " +
-                "configured, skipping");
-        return;
-      }
 
-      // 创建欢迎消息
-      OpenClawUtils.createOpenClawWelcomeMessage(this, openClawAccount);
-      
-    } catch (Exception e) {
-      // 静默处理异常，不影响主流程
-      ALog.e(Constant.PROJECT_TAG, "checkAndCreateOpenClawSession", "Error occurred");
-    }
-  }
   
 
   @Override

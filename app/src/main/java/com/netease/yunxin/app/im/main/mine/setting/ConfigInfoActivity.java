@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +21,9 @@ import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityConfigInfoBinding;
 import com.netease.yunxin.app.im.welcome.WelcomeActivity;
 import com.netease.yunxin.kit.common.ui.activities.BaseLocalActivity;
+import com.netease.yunxin.kit.common.ui.dialog.CommonConfirmDialog;
+import com.netease.yunxin.kit.corekit.im2.IMKitClient;
+import com.netease.yunxin.kit.corekit.im2.extend.FetchCallback;
 
 /**
  * OpenClaw配置信息页面
@@ -140,18 +144,22 @@ public class ConfigInfoActivity extends BaseLocalActivity {
      * 显示重启应用确认对话框
      */
     private void showRestartConfirmDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("配置保存成功")
-                .setMessage("配置已保存，需要重启应用生效。是否立即重启应用？")
-                .setPositiveButton("立即重启", (dialog, which) -> {
-                    restartApp();
-                })
-                .setNegativeButton("稍后重启", (dialog, which) -> {
-                    Toast.makeText(this, "配置已保存，请稍后重启应用", Toast.LENGTH_LONG).show();
-                    finish();
-                })
-                .setCancelable(false)
-                .show();
+
+        CommonConfirmDialog.Companion.show(
+                this,
+                getString(R.string.server_config_agent_title),
+                getString(R.string.server_config_agent_dialog_content),
+                getString(R.string.server_config_dialog_cancel),
+                getString(R.string.server_config_dialog_positive),
+                true,
+                false,
+                positive -> {
+                    if (positive) {
+                        restartApp();
+                    }else {
+                        finish();
+                    }
+                });
     }
 
     /**

@@ -12,7 +12,7 @@ android {
     namespace = "com.netease.yunxin.app.im"
 
     defaultConfig {
-        applicationId = "com.netease.yunxin.app.im"
+        applicationId = "com.netease.yunxin.app.im.openclaw"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

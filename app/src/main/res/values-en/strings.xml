@@ -35,7 +35,10 @@
     <string name="server_config_china_text">China</string>
     <string name="server_config_oversea_text">Singapore</string>
     <string name="server_config_dialog_title">Select Node</string>
+    <string name="server_config_agent_title">Save Agent Config</string>
     <string name="server_config_dialog_content">The app will exit after switching nodes and take effect after restarting</string>
+    <string name="server_config_agent_dialog_content">The app will exit after switching config
+        and take effect after restarting</string>
     <string name="server_config_dialog_positive">OK</string>
     <string name="server_config_dialog_cancel">Cancel</string>
     <string name="incoming_call_notify_audio">[Audio Call]</string>
