@@ -34,6 +34,7 @@ import com.netease.nimlib.sdk.v2.user.V2NIMUser;
 import com.netease.yunxin.app.im.AppConfig;
 import com.netease.yunxin.app.im.AppSkinConfig;
 import com.netease.yunxin.app.im.BuildConfig;
+import com.netease.yunxin.app.im.utils.ConfigDataUtils;
 import com.netease.yunxin.app.im.R;
 import com.netease.yunxin.app.im.databinding.ActivityMainBinding;
 import com.netease.yunxin.app.im.main.mine.MineFragment;
@@ -43,6 +44,7 @@ import com.netease.yunxin.app.im.utils.Constant;
 import com.netease.yunxin.app.im.utils.DataUtils;
 import com.netease.yunxin.app.im.utils.MessageUtils;
 import com.netease.yunxin.app.im.utils.MultiLanguageUtils;
+import com.netease.yunxin.app.im.utils.OpenClawUtils;
 import com.netease.yunxin.app.im.utils.ViewUtils;
 import com.netease.yunxin.app.im.welcome.WelcomeActivity;
 import com.netease.yunxin.kit.alog.ALog;
@@ -387,6 +389,9 @@ public class MainActivity extends BaseLocalActivity {
     if (haveUnreadContact) {
       activityMainBinding.contactDot.setVisibility(View.VISIBLE);
     }
+
+      // OpenClaw 智能体集成逻辑
+      checkAndCreateOpenClawSession();
   }
 
   @Override
@@ -412,6 +417,32 @@ public class MainActivity extends BaseLocalActivity {
       loadSettingConfig();
     }
   }
+  
+  /**
+   * 检查并创建 OpenClaw 智能体会话
+   * 仅在用户配置了 OpenClaw 账号时执行
+   */
+  private void checkAndCreateOpenClawSession() {
+    try {
+      // 获取用户配置的 OpenClaw 账号
+      String openClawAccount = ConfigDataUtils.getOpenClawAccount(this);
+      
+      // 如果没有配置 OpenClaw 账号，跳过
+      if (TextUtils.isEmpty(openClawAccount)) {
+        ALog.i(Constant.PROJECT_TAG, "checkAndCreateOpenClawSession", "No OpenClaw account " +
+                "configured, skipping");
+        return;
+      }
+
+      // 创建欢迎消息
+      OpenClawUtils.createOpenClawWelcomeMessage(this, openClawAccount);
+      
+    } catch (Exception e) {
+      // 静默处理异常，不影响主流程
+      ALog.e(Constant.PROJECT_TAG, "checkAndCreateOpenClawSession", "Error occurred");
+    }
+  }
+  
 
   @Override
   protected void onDestroy() {
